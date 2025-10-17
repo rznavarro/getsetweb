@@ -38,6 +38,19 @@
       @apply translate-y-2;
     }
 
+    /* Disable complex animations on mobile for better performance */
+    .animate-shimmer {
+      animation: none;
+    }
+
+    .animate-spin {
+      animation: none;
+    }
+
+    .animate-ping {
+      animation: none;
+    }
+
     /* Ensure smooth scrolling on touch devices */
     * {
       -webkit-overflow-scrolling: touch;

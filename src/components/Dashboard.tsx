@@ -17,21 +17,30 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ savedMetrics, onMetricsChange }: DashboardProps) {
-  const [mainMetrics, setMainMetrics] = useState<Metric[]>(savedMetrics?.mainMetrics || [
+  // Safe initialization with fallbacks
+  const defaultMainMetrics = [
     { id: '1', title: 'Total Revenue', value: '$0', icon: '💰' },
     { id: '2', title: 'Active Clients', value: '0', icon: '👥' },
     { id: '3', title: 'Conversion Rate', value: '0%', icon: '🎯' },
     { id: '4', title: 'ROI', value: '0%', icon: '📈' },
-  ]);
+  ];
 
-  const [keyMetrics, setKeyMetrics] = useState<Metric[]>(savedMetrics?.keyMetrics || [
+  const defaultKeyMetrics = [
     { id: '5', title: 'New Leads', value: '0', icon: '🔥' },
     { id: '6', title: 'Monthly Sales', value: '0', icon: '💵' },
     { id: '7', title: 'Average Ticket', value: '$0', icon: '🎫' },
     { id: '8', title: 'Customer Satisfaction', value: '0%', icon: '⭐' },
     { id: '9', title: 'Retention Rate', value: '0%', icon: '🔄' },
     { id: '10', title: 'Profit Margin', value: '0%', icon: '📊' },
-  ]);
+  ];
+
+  const [mainMetrics, setMainMetrics] = useState<Metric[]>(
+    (savedMetrics?.mainMetrics && Array.isArray(savedMetrics.mainMetrics)) ? savedMetrics.mainMetrics : defaultMainMetrics
+  );
+
+  const [keyMetrics, setKeyMetrics] = useState<Metric[]>(
+    (savedMetrics?.keyMetrics && Array.isArray(savedMetrics.keyMetrics)) ? savedMetrics.keyMetrics : defaultKeyMetrics
+  );
 
   const [editingMetric, setEditingMetric] = useState<Metric | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

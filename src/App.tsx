@@ -13,17 +13,32 @@ function App() {
   const [savedMetrics, setSavedMetrics] = useState<any>(null);
 
   useEffect(() => {
-    // Load authentication state
-    const isAuth = localStorage.getItem(AUTH_KEY) === 'true';
-    if (isAuth) {
-      setIsAuthenticated(true);
-      setIsLoading(true);
-    }
+    try {
+      // Load authentication state
+      const isAuth = localStorage.getItem(AUTH_KEY) === 'true';
+      if (isAuth) {
+        setIsAuthenticated(true);
+        setIsLoading(true);
+      }
 
-    // Load saved metrics
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setSavedMetrics(JSON.parse(saved));
+      // Load saved metrics with error handling
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsedMetrics = JSON.parse(saved);
+        // Validate that parsed metrics have the expected structure
+        if (parsedMetrics && typeof parsedMetrics === 'object') {
+          setSavedMetrics(parsedMetrics);
+        }
+      }
+    } catch (error) {
+      console.warn('Error loading data from localStorage:', error);
+      // Reset to default state on error
+      localStorage.removeItem(AUTH_KEY);
+      localStorage.removeItem(STORAGE_KEY);
+      setIsAuthenticated(false);
+      setIsLoading(false);
+      setShowDashboard(false);
+      setSavedMetrics(null);
     }
   }, []);
 
@@ -54,7 +69,8 @@ function App() {
     return <Dashboard savedMetrics={savedMetrics} onMetricsChange={setSavedMetrics} />;
   }
 
-  return null;
+  // Fallback: show login screen if something goes wrong
+  return <LoginScreen onLogin={handleLogin} />;
 }
 
 export default App;
