@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Loader2 } from 'lucide-react';
 
 interface LoadingScreenProps {
@@ -7,8 +7,14 @@ interface LoadingScreenProps {
 
 export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
+    // Start playing the audio
+    if (audioRef.current) {
+      audioRef.current.play().catch(console.error);
+    }
+
     const duration = 60000; // 60 segundos
     const interval = 100; // actualizar cada 100ms
     const steps = duration / interval;
@@ -19,6 +25,11 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         const next = prev + increment;
         if (next >= 100) {
           clearInterval(timer);
+          // Stop audio when loading completes
+          if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+          }
           setTimeout(() => onComplete(), 500);
           return 100;
         }
@@ -26,18 +37,33 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       });
     }, interval);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      // Cleanup audio on unmount
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
   }, [onComplete]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4 transition-opacity duration-1000">
-      <div className="w-full max-w-2xl">
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4 sm:p-6 transition-opacity duration-1000">
+      {/* Hidden audio element */}
+      <audio
+        ref={audioRef}
+        src="https://www.youtube.com/watch?v=gvml0rdYsa4"
+        preload="auto"
+        loop={false}
+      />
+
+      <div className="w-full max-w-2xl px-4">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
             <Loader2 className="w-16 h-16 text-[#FFD700] animate-spin" />
           </div>
-          <h2 className="text-3xl font-light text-white mb-2 tracking-wide">Cargando Dashboard...</h2>
-          <p className="text-[#d4d4d4]">Preparando su experiencia ejecutiva</p>
+          <h2 className="text-3xl font-light text-white mb-2 tracking-wide">Loading Dashboard...</h2>
+          <p className="text-[#d4d4d4]">Preparing your executive experience</p>
         </div>
 
         <div className="space-y-4">
@@ -51,7 +77,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-[#d4d4d4] text-sm">Progreso</span>
+            <span className="text-[#d4d4d4] text-sm">Progress</span>
             <span className="text-[#FFD700] text-2xl font-bold">{Math.floor(progress)}%</span>
           </div>
 
@@ -64,7 +90,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         </div>
 
         <div className="mt-12 grid grid-cols-3 gap-6">
-          {['Métricas', 'Análisis', 'Reportes'].map((item, index) => (
+          {['Metrics', 'Analysis', 'Reports'].map((item, index) => (
             <div
               key={item}
               className={`text-center p-6 bg-[#1a1a1a] border border-[#FFD700]/20 rounded-lg transition-all duration-700 ease-out ${

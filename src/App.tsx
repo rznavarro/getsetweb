@@ -4,6 +4,7 @@ import LoadingScreen from './components/LoadingScreen';
 import Dashboard from './components/Dashboard';
 
 const STORAGE_KEY = 'dashboard_metrics';
+const AUTH_KEY = 'dashboard_authenticated';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,6 +13,14 @@ function App() {
   const [savedMetrics, setSavedMetrics] = useState<any>(null);
 
   useEffect(() => {
+    // Load authentication state
+    const isAuth = localStorage.getItem(AUTH_KEY) === 'true';
+    if (isAuth) {
+      setIsAuthenticated(true);
+      setIsLoading(true);
+    }
+
+    // Load saved metrics
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       setSavedMetrics(JSON.parse(saved));
@@ -21,6 +30,7 @@ function App() {
   const handleLogin = (code: string) => {
     if (code.toLowerCase() === 'getsetweb') {
       setIsAuthenticated(true);
+      localStorage.setItem(AUTH_KEY, 'true'); // Persist authentication
       setIsLoading(true);
       return true;
     }
