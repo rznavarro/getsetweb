@@ -19,19 +19,19 @@ interface DashboardProps {
 export default function Dashboard({ savedMetrics, onMetricsChange }: DashboardProps) {
   // Safe initialization with fallbacks
   const defaultMainMetrics = [
-    { id: '1', title: 'Total Revenue', value: '$0', icon: '💰' },
-    { id: '2', title: 'Active Clients', value: '0', icon: '👥' },
-    { id: '3', title: 'Conversion Rate', value: '0%', icon: '🎯' },
-    { id: '4', title: 'ROI', value: '0%', icon: '📈' },
+    { id: '1', title: 'Total Revenue', value: '$0', icon: 'dollar-sign' },
+    { id: '2', title: 'Active Clients', value: '0', icon: 'users' },
+    { id: '3', title: 'Conversion Rate', value: '0%', icon: 'target' },
+    { id: '4', title: 'ROI', value: '0%', icon: 'chart-up' },
   ];
 
   const defaultKeyMetrics = [
-    { id: '5', title: 'New Leads', value: '0', icon: '🔥' },
-    { id: '6', title: 'Monthly Sales', value: '0', icon: '💵' },
-    { id: '7', title: 'Average Ticket', value: '$0', icon: '🎫' },
-    { id: '8', title: 'Customer Satisfaction', value: '0%', icon: '⭐' },
-    { id: '9', title: 'Retention Rate', value: '0%', icon: '🔄' },
-    { id: '10', title: 'Profit Margin', value: '0%', icon: '📊' },
+    { id: '5', title: 'New Leads', value: '0', icon: 'fire' },
+    { id: '6', title: 'Monthly Sales', value: '0', icon: 'dollar-bill' },
+    { id: '7', title: 'Average Ticket', value: '$0', icon: 'ticket' },
+    { id: '8', title: 'Customer Satisfaction', value: '0%', icon: 'star' },
+    { id: '9', title: 'Retention Rate', value: '0%', icon: 'refresh' },
+    { id: '10', title: 'Profit Margin', value: '0%', icon: 'chart-bar' },
   ];
 
   const [mainMetrics, setMainMetrics] = useState<Metric[]>(
