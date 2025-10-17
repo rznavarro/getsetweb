@@ -1,3 +1,6 @@
+import React from 'react';
+import { Edit } from 'lucide-react';
+
 interface Metric {
   id: string;
   title: string;
@@ -16,10 +19,10 @@ export default function MainMetricCard({ metric, onEdit }: MainMetricCardProps) 
       <div className="flex items-start justify-end mb-6">
         <button
           onClick={() => onEdit(metric)}
-          className="p-3 hover:bg-[#FFD700]/20 rounded-lg transition-all duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 transform translate-y-0 md:translate-y-2 md:group-hover:translate-y-0"
+          className="p-3 bg-[#FFD700]/10 hover:bg-[#FFD700]/30 border border-[#FFD700]/30 hover:border-[#FFD700]/60 rounded-lg transition-all duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 transform translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 shadow-sm hover:shadow-md"
           aria-label="Editar métrica"
         >
-          <span className="text-lg">Edit</span>
+          <Edit size={16} className="text-[#FFD700]" />
         </button>
       </div>
 
