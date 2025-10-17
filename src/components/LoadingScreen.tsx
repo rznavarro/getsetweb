@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
 interface LoadingScreenProps {
@@ -7,15 +7,9 @@ interface LoadingScreenProps {
 
 export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    // Start playing the audio
-    if (audioRef.current) {
-      audioRef.current.play().catch(console.error);
-    }
-
-    const duration = 60000; // 60 segundos
+    const duration = 3000; // 3 segundos para mejor UX en móvil
     const interval = 100; // actualizar cada 100ms
     const steps = duration / interval;
     const increment = 100 / steps;
@@ -25,11 +19,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         const next = prev + increment;
         if (next >= 100) {
           clearInterval(timer);
-          // Stop audio when loading completes
-          if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-          }
           setTimeout(() => onComplete(), 500);
           return 100;
         }
@@ -37,26 +26,11 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       });
     }, interval);
 
-    return () => {
-      clearInterval(timer);
-      // Cleanup audio on unmount
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-    };
+    return () => clearInterval(timer);
   }, [onComplete]);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4 sm:p-6 transition-opacity duration-1000">
-      {/* Hidden audio element */}
-      <audio
-        ref={audioRef}
-        src="https://www.youtube.com/watch?v=gvml0rdYsa4"
-        preload="auto"
-        loop={false}
-      />
-
       <div className="w-full max-w-2xl px-4">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
