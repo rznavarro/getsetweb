@@ -49,13 +49,13 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               </label>
               <input
                 id="access-code"
-                type="password"
+                type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 className="w-full px-4 py-4 bg-[#1a1a1a] border-2 border-[#FFD700]/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#FFD700] focus:shadow-lg focus:shadow-[#FFD700]/30 transition-all duration-300 text-base min-h-[44px]"
                 placeholder="Enter your code"
                 autoFocus
-                inputMode="numeric"
+                inputMode="text"
               />
             </div>
 
